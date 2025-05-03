@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contatore Obiettivo 910</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    button {
+      font-size: 1.5rem;
+      padding: 10px 20px;
+      margin-top: 20px;
+    }
+    .info {
+      margin-top: 30px;
+      font-size: 1.2rem;
+      white-space: pre-line;
+    }
+  </style>
+</head>
+<body>
+  <h1>Contatore Obiettivo 910</h1>
+  <h2 id="count">0</h2>
+  <button onclick="increment()">Fatto!</button>
+  <div class="info" id="status"></div>
+
+  <script>
+    const goal = 910;
+    const today = new Date();
+    const start = new Date(today.getFullYear(), 0, 1);
+    const daysPassed = Math.floor((today - start) / (1000 * 60 * 60 * 24)) + 1;
+    const expectedSoFar = (goal / 365) * daysPassed;
+
+    let count = parseInt(localStorage.getItem("habitCount")) || 0;
+
+    function updateDisplay() {
+      document.getElementById("count").innerText = count;
+      const diff = count - expectedSoFar;
+      const status =
+        diff > 0
+          ? `Sei in anticipo di ${diff.toFixed(1)} azioni.`
+          : diff < 0
+          ? `Sei in ritardo di ${Math.abs(diff).toFixed(1)} azioni.`
+          : "Sei perfettamente in pari!";
+      document.getElementById("status").innerText = `
+Obiettivo annuale: ${goal} azioni
+Giorni trascorsi: ${daysPassed}
+Media richiesta: ${(goal / 365).toFixed(2)} al giorno
+Obiettivo fino a oggi: ${expectedSoFar.toFixed(1)}
+
+${status}`;
+    }
+
+    function increment() {
+      count++;
+      localStorage.setItem("habitCount", count);
+      updateDisplay();
+    }
+
+    updateDisplay();
+  </script>
+</body>
+</html>
